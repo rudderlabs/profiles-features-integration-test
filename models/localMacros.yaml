@@ -30,3 +30,32 @@ macros:
           datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}}
         {% endif %}
       {% endif %}
+  - name: macro_has_seen_recently
+    inputs:
+        - days_since_last_seen
+    value: |
+        {% if warehouse.DatabaseType() == "bigquery" %}
+          case when RAND()>0.99 then NULL when {{days_since_last_seen}} <= 7 then TRUE else FALSE end
+        {% else %}
+          case when RANDOM()>0.99 then NULL when {{days_since_last_seen}} <= 7 then TRUE else FALSE end
+        {% endif %}
+  - name: macro_last_seen_category
+    inputs:
+        - days_since_last_seen
+    value: |
+        {% if warehouse.DatabaseType() == "bigquery" %}
+          case when RAND()>0.99 then NULL when {{days_since_last_seen}} <= 7 then 'recent' when {{days_since_last_seen}} <= 30 then 'moderate' else 'inactive' end
+        {% else %}
+          case when RANDOM()>0.99 then NULL when {{days_since_last_seen}} <= 7 then 'recent' when {{days_since_last_seen}} <= 30 then 'moderate' else 'inactive' end
+        {% endif %}
+  - name: macro_random_agg_event
+    inputs:
+        - EVENT
+    value: |
+        {% if warehouse.DatabaseType() == "redshift" %}
+          case when RANDOM()>0.99 then NULL  else listagg(distinct {{EVENT}}, ', ') end
+        {% elif warehouse.DatabaseType() == "bigquery" %}
+          case when RAND()>0.99 then NULL  else array_agg(distinct {{EVENT}}) end
+        {% else %}
+          case when RANDOM()>0.99 then NULL  else array_agg(distinct {{EVENT}}) end
+        {% endif %}
