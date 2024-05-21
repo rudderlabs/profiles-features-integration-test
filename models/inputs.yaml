@@ -14,7 +14,7 @@ inputs:
         - name: anonymous_id
         - name: email
     app_defaults:
-      table: predictions_dev_project.identifies
+      table: identifies
       occurred_at_col: timestamp
       ids:
         - select: "user_id"
@@ -40,7 +40,7 @@ inputs:
         - name: user_id
         - name: anonymous_id
     app_defaults:
-      table: predictions_dev_project.tracks
+      table: tracks
       occurred_at_col: timestamp
       ids:
         - select: "user_id"
@@ -63,7 +63,7 @@ inputs:
         - name: user_id
         - name: anonymous_id
     app_defaults:
-      table: predictions_dev_project.pages
+      table: pages
       occurred_at_col: timestamp
       ids:
         - select: "user_id"
@@ -85,7 +85,7 @@ inputs:
         - name: timestamp
         - name: user_id
     app_defaults:
-      table: predictions_dev_project.order_completed
+      table: order_completed
       occurred_at_col: timestamp
       ids:
         - select: "user_id"
