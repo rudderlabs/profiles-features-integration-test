@@ -25,7 +25,7 @@ models:
         - is_churned_7_days
         - has_seen_recently
         - last_seen_category
-        - random_agg_event
+        # - random_agg_event
 var_groups:
   - name: user_vars
     entity_key: user
