@@ -23,7 +23,9 @@ models:
         - gross_amt_spent_in_past_90_days
         - days_since_last_seen
         - is_churned_7_days
-
+        - has_seen_recently
+        - last_seen_category
+        # - random_agg_event
 var_groups:
   - name: user_vars
     entity_key: user
@@ -65,3 +67,19 @@ var_groups:
           name: is_churned_7_days
           select: case when {{user.Var("days_since_last_seen")}} > 7 then 1 else 0 end
           description: it specifies if there is any activity observed in the last n days. It is dependent on days_since_last_seen
+      # New boolean feature based on days_since_last_seen
+      - entity_var:
+          name: has_seen_recently
+          select: "{{macro_has_seen_recently('{{user.Var(\"days_since_last_seen\")}}')}}"
+          description: Whether the user has added a product to seen recently (within the last 7 days).
+      # New categorical feature based on days_since_last_seen
+      - entity_var:
+          name: last_seen_category
+          select: "{{macro_last_seen_category('{{user.Var(\"days_since_last_seen\")}}')}}"
+          description: Categorical variable indicating seen activity.
+      # # New array type feature based on days_since_last_seen
+      # - entity_var:
+      #     name: random_agg_event
+      #     select: "{{macro_random_agg_event('EVENT')}}"
+      #     from: inputs/rsTracks
+      #     description: Array type variable containing EVENT
