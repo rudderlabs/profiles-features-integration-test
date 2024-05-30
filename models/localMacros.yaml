@@ -52,10 +52,10 @@ macros:
     inputs:
       - EVENT
     value: |
-      {% if warehouse.DatabaseType() == "redshift" %}
-        case when RANDOM()>0.99 then NULL  else listagg(distinct {{EVENT}}, ', ') end
-      {% elif warehouse.DatabaseType() == "bigquery" %}
-        case when RAND()>0.99 then NULL  else array_agg(distinct {{EVENT}}) end
-      {% else %}
-        case when RANDOM()>0.99 then NULL  else array_agg(distinct {{EVENT}}) end
-      {% endif %}
+        {% if warehouse.DatabaseType() == "redshift" %}
+          case when RANDOM()>0.99 then NULL  else SPLIT_TO_ARRAY(listagg(distinct {{EVENT}}, ','), ',') end
+        {% elif warehouse.DatabaseType() == "bigquery" %}
+          case when RAND()>0.99 then NULL  else array_agg(distinct {{EVENT}}) end
+        {% else %}
+          case when RANDOM()>0.99 then NULL  else array_agg(distinct {{EVENT}}) end
+        {% endif %}
