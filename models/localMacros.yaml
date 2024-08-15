@@ -63,7 +63,7 @@ macros:
     inputs:
     value: |
       {% if warehouse.DatabaseType() == "bigquery" %}
-        (RAND() * 2) / 3
+        (UNIFORM(0::FLOAT, 1::FLOAT, RAND()) * 2) / 3
       {% else %}
-        (RANDOM() * 2) / 3
+        (UNIFORM(0::FLOAT, 1::FLOAT, RANDOM()) * 2) / 3
       {% endif %}
