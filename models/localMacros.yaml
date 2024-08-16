@@ -65,7 +65,7 @@ macros:
       {% if warehouse.DatabaseType() == "bigquery" %}
         (RAND() * 2) / 3
       {% elif warehouse.DatabaseType() == "snowflake" %}
-        (UNIFORM(0::FLOAT, 1::FLOAT, RANDOM()) * 2) / 3
+        (UNIFORM(0:numeric(12,2), 1:numeric(12,2), RANDOM()) * 2) / 3
       {% else %}
         (RANDOM() * 2) / 3
       {% endif %}
