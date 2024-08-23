@@ -59,3 +59,13 @@ macros:
       {% else %}
         case when RANDOM()>0.99 then NULL  else array_agg(distinct {{EVENT}}) end
       {% endif %}
+  - name: macro_random_float
+    inputs:
+    value: |
+      {% if warehouse.DatabaseType() == "bigquery" %}
+        (RAND() * 2) / 3
+      {% elif warehouse.DatabaseType() == "snowflake" %}
+        (UNIFORM(0::numeric(12,2), 1::numeric(12,2), RANDOM()) * 2) / 3
+      {% else %}
+        (RANDOM() * 2) / 3
+      {% endif %}

@@ -26,6 +26,7 @@ models:
         - has_seen_recently
         - last_seen_category
         - random_agg_event
+        - random_float_feature
 var_groups:
   - name: user_vars
     entity_key: user
@@ -83,3 +84,7 @@ var_groups:
           select: "{{macro_random_agg_event('event')}}"
           from: inputs/rsTracks
           description: Array type variable containing event
+      - entity_var:
+          name: random_float_feature
+          select: "{{macro_random_float()}}"
+          description: This feature contains values that are in decimal format.
