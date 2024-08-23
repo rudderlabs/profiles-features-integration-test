@@ -87,4 +87,4 @@ var_groups:
       - entity_var:
           name: random_float_feature
           select: "{{macro_random_float()}}"
-          description: this feature is created for testing purposes.
+          description: This feature contains values that are in decimal format.
