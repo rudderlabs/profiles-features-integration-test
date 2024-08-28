@@ -40,7 +40,3 @@ models:
           - user
         with_columns:
           - name: user_id
-          - name: dummy_int_1
-          - name: dummy_int_2
-          - name: dummy_bool_1
-          - name: dummy_bool_2
