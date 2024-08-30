@@ -5,7 +5,7 @@ models:
       validity_time: 24h # 1 day
       single_sql: |
         {% with entity_id = this.DeRef("inputs/rsTracks/var_table/user_main_id") Tracks = this.DeRef("inputs/rsTracks/var_table") %}
-            select user_main_id, timestamp, dummy_int_1, dummy_int_2, dummy_bool_1, dummy_bool_2 from (
+            select user_main_id, timestamp as timestamp, dummy_int_1, dummy_int_2, dummy_bool_1, dummy_bool_2 from (
               select 
                 distinct user_main_id, 
                 min(timestamp) as timestamp, 
