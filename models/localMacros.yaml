@@ -73,9 +73,9 @@ macros:
     inputs:
     value: |
       {% if warehouse.DatabaseType() == "bigquery" %}
-        SELECT STRING_AGG(CHR(65 + CAST(FLOOR(26 * RAND()) AS INT64)), '') FROM UNNEST(GENERATE_ARRAY(1, 16))
+        (SELECT STRING_AGG(CHR(65 + CAST(FLOOR(26 * RAND()) AS INT64)), '') FROM UNNEST(GENERATE_ARRAY(1, 16)))
       {% elif warehouse.DatabaseType() == "snowflake" %}
-        SELECT LISTAGG(CHR(65 + MOD(ABS(HASH(RANDOM()))::INT, 26)), '') WITHIN GROUP (ORDER BY SEQ4()) FROM TABLE(GENERATOR(ROWCOUNT => 16))
+        (SELECT LISTAGG(CHR(65 + MOD(ABS(HASH(RANDOM()))::INT, 26)), '') WITHIN GROUP (ORDER BY SEQ4()) FROM TABLE(GENERATOR(ROWCOUNT => 16)))
       {% else %}
         CONCAT('9', LPAD(CAST(TRUNC(RANDOM() * 99999999999 + 10000000000) AS VARCHAR), 11, '0'))
       {% endif %}
