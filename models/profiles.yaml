@@ -27,6 +27,7 @@ models:
         - last_seen_category
         - random_agg_event
         - random_float_feature
+        - high_cardinality_feature
 var_groups:
   - name: user_vars
     entity_key: user
@@ -88,3 +89,7 @@ var_groups:
           name: random_float_feature
           select: "{{macro_random_float()}}"
           description: This feature contains values that are in decimal format.
+      - entity_var:
+          name: high_cardinality_feature
+          select: "{{macro_high_cardinality_feature()}}"
+          description: This feature contains values that are high cardinal.

@@ -69,3 +69,13 @@ macros:
       {% else %}
         (RANDOM() * 2) / 3
       {% endif %}
+  - name: macro_high_cardinality_feature
+    inputs:
+    value: |
+      {% if warehouse.DatabaseType() == "bigquery" %}
+        CONCAT('9', LPAD(CAST(FLOOR(RAND() * 99999999999) + 10000000000 AS STRING), 11, '0'))
+      {% elif warehouse.DatabaseType() == "snowflake" %}
+        CONCAT('9', LPAD(TO_CHAR(FLOOR(RANDOM() * 99999999999) + 10000000000), 11, '0'))
+      {% else %}
+        CONCAT('9', LPAD(CAST(TRUNC(RANDOM() * 99999999999 + 10000000000) AS VARCHAR), 11, '0'))
+      {% endif %}
