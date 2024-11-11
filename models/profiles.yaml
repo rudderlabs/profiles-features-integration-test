@@ -27,6 +27,10 @@ models:
         - last_seen_category
         - random_agg_event
         - random_float_feature
+        - random_date_feature
+        - random_timestamp_feature
+        - random_tz_aware_feature
+        - random_tz_unaware_feature
 var_groups:
   - name: user_vars
     entity_key: user
@@ -88,3 +92,15 @@ var_groups:
           name: random_float_feature
           select: "{{macro_random_float()}}"
           description: This feature contains values that are in decimal format.
+      - entity_var:
+          name: random_date_feature
+          select: "{{macro_random_date_feature()}}"
+      - entity_var:
+          name: random_timestamp_feature
+          select: TIMESTAMP '2023-11-04 12:34:56'
+      - entity_var:
+          name: random_tz_aware_feature
+          select: "{{macro_random_tz_aware_feature()}}"
+      - entity_var:
+          name: random_tz_unaware_feature
+          select: "{{macro_random_tz_unaware_feature()}}"

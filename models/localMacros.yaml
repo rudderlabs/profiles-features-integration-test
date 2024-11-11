@@ -69,3 +69,31 @@ macros:
       {% else %}
         (RANDOM() * 2) / 3
       {% endif %}
+  - name: macro_random_date_feature
+    inputs:
+    value: |
+      {% if warehouse.DatabaseType() == "bigquery" %}
+        date('2023-11-04 12:34:56')
+      {% else %}
+        date '2024-11-04 13:32:34.083189'
+      {% endif %}
+  - name: macro_random_tz_aware_feature
+    inputs:
+    value: |
+      {% if warehouse.DatabaseType() == "bigquery" %}
+        TIMESTAMP(DATETIME(CURRENT_TIMESTAMP(), 'America/New_York'))
+      {% elif warehouse.DatabaseType() == "snowflake" %}
+        CONVERT_TIMEZONE('America/New_York', CURRENT_TIMESTAMP)::TIMESTAMP_TZ
+      {% else %}
+        CURRENT_TIMESTAMP AT TIME ZONE 'America/New_York'
+      {% endif %}
+  - name: macro_random_tz_unaware_feature
+    inputs:
+    value: |
+      {% if warehouse.DatabaseType() == "bigquery" %}
+        CURRENT_DATETIME()
+      {% elif warehouse.DatabaseType() == "snowflake" %}
+        CURRENT_TIMESTAMP::TIMESTAMP_NTZ
+      {% else %}
+        timestamp '2024-11-04 13:32:34.083189'
+      {% endif %}
