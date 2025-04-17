@@ -97,3 +97,12 @@ macros:
       {% else %}
         timestamp '2024-11-04 13:32:34.083189'
       {% endif %}
+  - name: macro_gross_amt_spent_in_past_90_days
+    inputs:
+      - REVENUE
+    value: |
+      {% if warehouse.DatabaseType() == "bigquery" %}
+        case when RAND()>0.99 then NULL else SUM({{REVENUE}}) end
+      {% else %}
+        case when RANDOM()>0.99 then NULL else SUM({{REVENUE}}) end
+      {% endif %}

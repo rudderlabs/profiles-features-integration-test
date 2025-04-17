@@ -31,6 +31,7 @@ models:
         - random_timestamp_feature
         - random_tz_aware_feature
         - random_tz_unaware_feature
+        - random_high_cardinal_feature
 var_groups:
   - name: user_vars
     entity_key: user
@@ -39,17 +40,14 @@ var_groups:
           name: max_timestamp_tracks
           select: max(timestamp)
           from: inputs/rsTracks
-          is_feature: false
       - entity_var:
           name: max_timestamp_pages
           select: max(timestamp)
           from: inputs/rsPages
           description: The total value of products that are part of the last transaction.
-          is_feature: false
       - entity_var:
           name: max_timestamp_bw_tracks_pages
           select: CASE WHEN {{user.Var("max_timestamp_tracks")}}>={{user.Var("max_timestamp_pages")}} THEN {{user.Var("max_timestamp_tracks")}} ELSE {{user.Var("max_timestamp_pages")}} END
-          is_feature: false
       # LTV features
       - entity_var:
           name: n_orders_completed
@@ -60,7 +58,7 @@ var_groups:
       - entity_var:
           name: gross_amt_spent_in_past_90_days
           default: 0
-          select: sum(REVENUE)
+          select: "{{macro_gross_amt_spent_in_past_90_days('REVENUE')}}"
           from: inputs/rsOrderCompleted
           where: "{{macro_datediff_n('timestamp','90')}}"
           description: Total amount spent in past 90 days.
@@ -104,3 +102,7 @@ var_groups:
       - entity_var:
           name: random_tz_unaware_feature
           select: "{{macro_random_tz_unaware_feature()}}"
+      - entity_var:
+          name: random_high_cardinal_feature
+          select: any_value(user_id)
+          from: inputs/rsPages
